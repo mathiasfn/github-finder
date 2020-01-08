@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import About from './components/pages/About';
+import Navbar from './components/layout/Navbar';
+import Alert from './components/layout/Alert';
+import User from './components/user/User';
+import Home from './components/pages/Home';
+import NotFound from './components/pages/NotFound';
+
+import GithubState from './context/github/githubState';
+
 import './App.css';
 
-function App() {
+const App = () => {
+  useEffect(() => {
+    //githubContext.searchUsers();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GithubState>
+      <Router>
+        <div className='App'>
+          <Navbar />
+          <div className='container'>
+            <Alert></Alert>
+            <Switch>
+              <Route path='/' exact component={Home} />
+              <Route path='/about' exact component={About} />
+              <Route path='/users/:login' exact component={User} />
+              <Route component={NotFound}></Route>
+            </Switch>
+          </div>
+        </div>
+      </Router>
+    </GithubState>
   );
-}
+};
 
 export default App;
